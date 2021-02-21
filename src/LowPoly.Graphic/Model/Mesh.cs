@@ -1,5 +1,7 @@
 using OpenTK.Graphics.OpenGL4;
 
+using System.Linq;
+
 
 namespace LowPoly.Graphic.Model
 {
@@ -20,17 +22,12 @@ namespace LowPoly.Graphic.Model
         private readonly int _elementBufferObject;
 
 
-        private readonly float[] _vertices;
+        private int _indicesCount;
 
 
-        private readonly uint[] _indices;
-
-
-        // TODO input vertices etc.
-        public Mesh( float[] vertices, uint[] indices )
+        public Mesh( Vertex[] vertices, uint[] indices )
         {
-            _vertices = vertices;
-            _indices = indices;
+            _indicesCount = indices.Length;
 
             _vertexArrayObject = GL.GenVertexArray();
             _vertexBufferObject = GL.GenBuffer();
@@ -61,23 +58,12 @@ namespace LowPoly.Graphic.Model
             GL.EnableVertexAttribArray( 0 );
             GL.EnableVertexAttribArray( 1 );
 
-            GL.BufferData(
-                BufferTarget.ArrayBuffer,
-                sizeof( float ) * _vertices.Length,
-                _vertices,
-                BufferUsageHint.StaticDraw
-            );
-
-            GL.BufferData(
-                BufferTarget.ElementArrayBuffer,
-                sizeof( float ) * _indices.Length,
-                _indices,
-                BufferUsageHint.StaticDraw
-            );
-
             GL.BindVertexArray( 0 );
             GL.BindBuffer( BufferTarget.ArrayBuffer, 0 );
             GL.BindBuffer( BufferTarget.ElementArrayBuffer, 0 );
+
+            LoadVertices( vertices );
+            LoadIndices( indices );
         }
 
 
@@ -95,13 +81,20 @@ namespace LowPoly.Graphic.Model
         }
 
 
+        public static void AdjustView( Camera _camera )
+        {
+            _shader.LoadMatrix4( "view", _camera.ViewMatrix );
+            _shader.LoadMatrix4( "projection", _camera.ProjectionMatrix );
+        }
+
+
         public void Draw()
         {
             GL.BindVertexArray( _vertexArrayObject );
 
             GL.DrawElements(
                 PrimitiveType.Triangles,
-                _indices.Length,
+                _indicesCount,
                 DrawElementsType.UnsignedInt,
                 0
             );
@@ -110,10 +103,35 @@ namespace LowPoly.Graphic.Model
         }
 
 
-        public static void AdjustView( Camera _camera )
+        public void LoadVertices( Vertex[] vertices )
         {
-            _shader.LoadMatrix4( "view", _camera.ViewMatrix );
-            _shader.LoadMatrix4( "projection", _camera.ProjectionMatrix );
+            GL.BindBuffer( BufferTarget.ArrayBuffer, _vertexBufferObject );
+
+            GL.BufferData(
+                BufferTarget.ArrayBuffer,
+                vertices.Length * Vertex.Size,
+                vertices.SelectMany( vertex => vertex.Data ).ToArray(),
+                BufferUsageHint.StaticDraw
+            );
+
+            GL.BindBuffer( BufferTarget.ArrayBuffer, 0 );
+        }
+
+
+        public void LoadIndices( uint[] indices )
+        {
+            _indicesCount = indices.Length;
+
+            GL.BindBuffer( BufferTarget.ElementArrayBuffer, _elementBufferObject );
+
+            GL.BufferData(
+                BufferTarget.ElementArrayBuffer,
+                _indicesCount * sizeof( uint ),
+                indices,
+                BufferUsageHint.StaticDraw
+            );
+
+            GL.BindBuffer( BufferTarget.ElementArrayBuffer, 0 );
         }
     }
 }

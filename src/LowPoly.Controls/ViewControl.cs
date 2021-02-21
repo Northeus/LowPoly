@@ -1,4 +1,4 @@
-using LowPoly.Graphic;
+using LowPoly.Player;
 
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -6,19 +6,18 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace LowPoly.Control
 {
-    // TODO wrap up
-    public static class CameraControl
+    public static class ViewControl
     {
-        public static Camera _camera; /* TODO different binding */
+        public static View _view;
 
 
         private static float _sensitivity = 1.0f * 100.0f;
 
 
-        private static Vector2 _mousePos = new Vector2( 0.0f, 0.0f );
+        private static Vector2 _mousePos;
 
 
-        private static bool _isFirstMouseMove = true;
+        private static bool _isFirstMouseMove;
 
 
         private static int _width;
@@ -27,7 +26,14 @@ namespace LowPoly.Control
         private static int _height;
 
 
-        private static float _speed = 5.0f;
+        public static void BindView( View view )
+        {
+            _view = view;
+
+            _mousePos = new Vector2( 0.0f, 0.0f );
+
+            _isFirstMouseMove = true;
+        }
 
 
         public static void ScreenSize( int width, int height )
@@ -41,38 +47,40 @@ namespace LowPoly.Control
         {
             if ( keyboard.IsKeyDown( Keys.W ) )
             {
-                _camera.Position +=  _camera.FrontHorizontal * _speed * time;
+                _view.Move( View.Direction.Front, time );
             }
 
             if ( keyboard.IsKeyDown( Keys.S ) )
             {
-                _camera.Position -= _camera.FrontHorizontal * _speed * time;
+                _view.Move( View.Direction.Back, time );
             }
 
             if ( keyboard.IsKeyDown( Keys.A ) )
             {
-                _camera.Position -= _camera.RightHorizontal * _speed * time;
+                _view.Move( View.Direction.Left, time );
             }
 
             if ( keyboard.IsKeyDown( Keys.D ) )
             {
-                _camera.Position += _camera.RightHorizontal * _speed * time;
+                _view.Move( View.Direction.Right, time );
             }
 
             if ( keyboard.IsKeyDown( Keys.Space ) )
             {
-                _camera.Position += Vector3.UnitY * _speed * time;
+                _view.Move( View.Direction.Up, time );
             }
 
             if ( keyboard.IsKeyDown( Keys.LeftShift ) )
             {
-                _camera.Position -= Vector3.UnitY * _speed * time;
+                _view.Move( View.Direction.Down, time );
             }
 
             if ( ! _isFirstMouseMove )
             {
-                _camera.RotationX += ( mouse.X - _mousePos.X ) / _width * _sensitivity;
-                _camera.RotationY -= ( mouse.Y - _mousePos.Y ) / _height * _sensitivity;
+                _view.Rotate(
+                    ( mouse.X - _mousePos.X ) / _width * _sensitivity,
+                    ( mouse.Y - _mousePos.Y ) / _height * _sensitivity
+                );
             }
             else
             {

@@ -4,7 +4,7 @@ namespace LowPoly.Graphic.Model
     {
         public Surface()
         {
-            // TODO intput world map
+            // TODO implement
         }
     }
 }

@@ -1,15 +1,19 @@
 using LowPoly.Control;
 using LowPoly.Graphic;
+using LowPoly.Player;
 
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework; // TODO remove (keys)
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 
 namespace LowPoly.Engine
 {
     public class Game : GameWindow
     {
+        private static View _view;
+
+
         public Game()
             : base( GameSettings.Game, GameSettings.Native )
         {
@@ -23,6 +27,11 @@ namespace LowPoly.Engine
         {
             Renderer.Load( Size.X, Size.Y );
 
+            _view = new View( Size.X, Size.Y );
+
+            ViewControl.BindView( _view );
+            ViewControl.ScreenSize( Size.X, Size.Y );
+
             base.OnLoad();
         }
 
@@ -31,13 +40,12 @@ namespace LowPoly.Engine
         {
             if ( IsFocused )
             {
-                // TODO remove
                 if ( KeyboardState.IsKeyDown( Keys.Escape ) )
                 {
-                    Close();
+                    Close(); /* Dont forget remove using GraphLibFram */
                 }
 
-                CameraControl.Update( KeyboardState, MouseState, ( float ) args.Time );
+                ViewControl.Update( KeyboardState, MouseState, ( float ) args.Time );
             }
 
             base.OnUpdateFrame( args );
@@ -46,8 +54,9 @@ namespace LowPoly.Engine
 
         protected override void OnRenderFrame( FrameEventArgs args )
         {
-            // TODO rendering here
-            Renderer.Draw();
+            Renderer.ClearScreen();
+
+            Renderer.Render();
 
             SwapBuffers();
 
@@ -58,6 +67,8 @@ namespace LowPoly.Engine
         protected override void OnResize( ResizeEventArgs args )
         {
             Renderer.Resize( Size.X, Size.Y );
+
+            _view.Camera.AdjustAspectRatio( Size.X, Size.Y );
 
             base.OnResize( args );
         }
