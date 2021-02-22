@@ -1,10 +1,20 @@
+using LowPoly.Graphic.Model;
+
 using OpenTK.Graphics.OpenGL4;
+
+using System.Collections.Generic;
 
 
 namespace LowPoly.Graphic
 {
     public static class Renderer
     {
+        private static List< Mesh > _toRender = new List< Mesh >();
+
+
+        private static Camera _camera;
+
+
         public static void Load( int width, int height )
         {
             GL.ClearColor( 0.0f, 0.0f, 0.3f, 1.0f );
@@ -15,7 +25,14 @@ namespace LowPoly.Graphic
 
         public static void Render()
         {
-            AdjustView();
+            Mesh.AdjustView( _camera );
+
+            Mesh.Bind();
+
+            foreach ( Mesh mesh in _toRender )
+            {
+                mesh.Draw();
+            }
         }
 
 
@@ -31,9 +48,11 @@ namespace LowPoly.Graphic
         }
 
 
-        private static void AdjustView()
+        public static void AddModel( Mesh mesh )
         {
-            //Mesh.AdjustView( _camera );
+            _toRender.Add( mesh );
         }
+
+        public static void BindCamera( Camera camera ) => _camera = camera;
     }
 }

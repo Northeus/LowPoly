@@ -1,6 +1,8 @@
 using LowPoly.Control;
 using LowPoly.Graphic;
+using LowPoly.Graphic.Model;
 using LowPoly.Player;
+using LowPoly.World;
 
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -12,6 +14,9 @@ namespace LowPoly.Engine
     public class Game : GameWindow
     {
         private static View _view;
+
+
+        private static Surface _surface = new Surface();
 
 
         public Game()
@@ -31,6 +36,10 @@ namespace LowPoly.Engine
 
             ViewControl.BindView( _view );
             ViewControl.ScreenSize( Size.X, Size.Y );
+
+            Renderer.BindCamera( _view.Camera );
+
+            Renderer.AddModel( new SurfaceModel( _surface ) );
 
             base.OnLoad();
         }

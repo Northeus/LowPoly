@@ -7,7 +7,7 @@ namespace LowPoly.Graphic
 {
     public class Camera
     {
-        public Vector3 Position = Vector3.Zero;
+        public Vector3 Position = new Vector3( 0.0f, 1.0f, 0.0f );
 
 
         private Vector3 _front = -Vector3.UnitZ;

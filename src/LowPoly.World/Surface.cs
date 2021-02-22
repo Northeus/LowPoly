@@ -5,10 +5,10 @@ namespace LowPoly.World
 {
     public class Surface
     {
-        public const int Width = 10;
+        public const int Width = 32;
 
 
-        public const int Height = 10;
+        public const int Height = 32;
 
 
         public readonly float[,] HeightMap;
@@ -16,7 +16,7 @@ namespace LowPoly.World
 
         public Surface()
         {
-            HeightMap = Noise.GenerateNoise( Width, Height, 0.5f );
+            HeightMap = Noise.GenerateNoise( Width, Height );
         }
     }
 }

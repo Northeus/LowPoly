@@ -2,9 +2,15 @@ namespace LowPoly.Algo
 {
     public static class Noise
     {
-        public static float[,] GenerateNoise( int width, int height, float smoothness )
+        public const float Height = 0.4f;
+
+
+        public const float Smoothness = 0.1f;
+
+
+        public static float[,] GenerateNoise( int width, int height )
         {
-            return Scale( SimplexNoise.Noise.Calc2D( width, height, smoothness ) );
+            return Scale( SimplexNoise.Noise.Calc2D( width, height, Smoothness ) );
         }
 
 
@@ -14,7 +20,7 @@ namespace LowPoly.Algo
             {
                 for ( int y = 0; y < noise.GetLength( 1 ); y++ )
                 {
-                    noise[ x, y ] = ( noise[ x, y ] - 128 ) / 128.0f;
+                    noise[ x, y ] = ( noise[ x, y ] - 128 ) / ( 128.0f / Height ) ;
                 }
             }
 
