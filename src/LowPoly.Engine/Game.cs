@@ -39,7 +39,8 @@ namespace LowPoly.Engine
 
             Renderer.BindCamera( _view.Camera );
 
-            Renderer.AddModel( new SurfaceModel( _surface ) );
+            // Renderer.AddModel( new SurfaceModel( _surface ) );
+            Renderer.AddModel( Loader.LoadModel( "../resources/tree.ply" ) );
 
             base.OnLoad();
         }

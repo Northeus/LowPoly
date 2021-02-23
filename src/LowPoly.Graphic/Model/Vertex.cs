@@ -11,16 +11,23 @@ namespace LowPoly.Graphic.Model
         public readonly float[] Data;
 
 
-        public Vertex( float x, float y, float z )
-            : this( x, y, z, 1.0f, 1.0f, 1.0f )
+        public Vertex( float[] data )
+        {
+            Data = data;
+        }
+
+
+        public Vertex( float x, float y, float z, float r, float g, float b )
+            : this( new float[] { x, y, z, r, g, b } )
         {
 
         }
 
 
-        public Vertex( float x, float y, float z, float r, float g, float b )
+        public Vertex( float x, float y, float z )
+            : this( x, y, z, 1.0f, 1.0f, 1.0f )
         {
-            Data = new float[] { x, y, z, r, g, b };
+
         }
     }
 }

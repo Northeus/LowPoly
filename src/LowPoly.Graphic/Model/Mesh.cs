@@ -27,6 +27,12 @@ namespace LowPoly.Graphic.Model
 
         public Mesh( Vertex[] vertices, uint[] indices )
         {
+            System.Console.WriteLine("VERTICES:");
+            foreach(Vertex v in vertices)System.Console.WriteLine(string.Join(" ", v.Data));
+
+            System.Console.WriteLine("INDICES:");
+            for(int i = 0; i < indices.Length; i += 3)System.Console.WriteLine($"{indices[i]} {indices[i+1]} {indices[i+2]}");
+
             _vertexArrayObject = GL.GenVertexArray();
             _vertexBufferObject = GL.GenBuffer();
             _elementBufferObject = GL.GenBuffer();
