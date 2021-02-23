@@ -12,8 +12,15 @@ namespace LowPoly.Graphic.Model
 
 
         public Vertex( float x, float y, float z )
+            : this( x, y, z, 1.0f, 1.0f, 1.0f )
         {
-            Data = new float[] { x, y, z, 1.0f, 0.5f + y / 2, 0.0f + y };
+
+        }
+
+
+        public Vertex( float x, float y, float z, float r, float g, float b )
+        {
+            Data = new float[] { x, y, z, r, g, b };
         }
     }
 }

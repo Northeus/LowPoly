@@ -5,10 +5,13 @@ namespace LowPoly.World
 {
     public class Surface
     {
-        public const int Width = 32;
+        public const int Width = 64;
 
 
-        public const int Height = 32;
+        public const int Height = 64;
+
+
+        public const float Distance = 0.5f;
 
 
         public readonly float[,] HeightMap;

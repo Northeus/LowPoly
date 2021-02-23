@@ -2,10 +2,10 @@ namespace LowPoly.Algo
 {
     public static class Noise
     {
-        public const float Height = 0.4f;
+        public const float Height = 1.0f;
 
 
-        public const float Smoothness = 0.1f;
+        public const float Smoothness = 0.05f;
 
 
         public static float[,] GenerateNoise( int width, int height )
