@@ -49,7 +49,7 @@ namespace LowPoly.Graphic.Model
 
             bool isEvenSquare = ( x + y ) % 2 == 0;
 
-            var color = GetColor( x, y, x + 1, y + 1, surface );
+            var color = GetColor();
 
             /* Some nasty 5h1t code */
             vertices[ index++ ] = new Vertex(
@@ -77,7 +77,7 @@ namespace LowPoly.Graphic.Model
                 color.Blue
             );
 
-            color = GetColor( x, y, x + 1, y + 1, surface );
+            color = GetColor();
 
             vertices[ index++ ] = new Vertex(
                 offsetX + ( x + 1 ) * gapX,
@@ -113,20 +113,8 @@ namespace LowPoly.Graphic.Model
                     .ToArray();
 
 
-        private static ( float Red, float Green, float Blue ) GetColor( int x0, int y0, int x1, int y1, Surface surface )
-        {
-            float height = ( surface.HeightMap[ x0, y0 ] + surface.HeightMap[ x1, y1 ] ) / 2;
-
-            float shoreHeight = -0.3f;
-
-            float diff = 0.2f;
-
-            ( float, float, float ) color = ( height < shoreHeight )
-                ? ( 1.0f, 1.0f, 0.8f + RandFloat( diff ) )
-                : ( 0.4f + RandFloat( diff ), 0.6f + RandFloat( diff ), 0.0f + RandFloat( diff ) );
-
-            return color;
-        }
+        private static ( float Red, float Green, float Blue ) GetColor()
+            => ( 0.4f + RandFloat( 0.05f ), 0.6f + RandFloat( 0.05f ), 0.0f + RandFloat( 0.05f ) );
 
 
         private static float RandFloat( float radius )
